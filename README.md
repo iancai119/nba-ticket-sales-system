@@ -1,4 +1,8 @@
 # Ticket Sales System
+![Oracle SQL](https://img.shields.io/badge/Database-Oracle_SQL-red)
+![JavaScript](https://img.shields.io/badge/Script-JavaScript-yellow)
+![jQuery](https://img.shields.io/badge/Library-jQuery-blue)
+![HTML5](https://img.shields.io/badge/Frontend-HTML5-orange)
 
 ## Project Overview
 This project simulates a backend database and a frontend dashboard for an NBA ticketing system. It demonstrates database design (normalization), SQL implementation, and data visualization using a web interface.
