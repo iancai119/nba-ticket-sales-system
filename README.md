@@ -13,14 +13,14 @@ This project simulates a backend database and a frontend dashboard for an NBA ti
 4.  **Business Intelligence:** SQL scripts designed to analyze revenue streams and identify VIP customers.
 
 ## Database Schema (ERD)
-![ER Diagram](database/erd_diagram.png)
+![ER Diagram](Ticket%20Sales%20System/Database/erd_diagram.png)
 
 ## Key SQL Analysis
 The project includes analytical queries to solve business problems, such as:
 * Calculating total revenue per game matchup.
 * Identifying high-value customers (VIPs) for marketing targeting.
-* *See `database/analytical_queries.sql` for details.*
+* *See `Ticket Sales System/Database/analytical_queries.sql` for details.*
 
 ## How to Run
-1.  **Database:** Run `database/schema_and_data.sql` in any Oracle SQL environment (SQL Developer, SQLPlus) to build the schema and populate data.
-2.  **Dashboard:** Open `web/index.html` in any web browser. (Note: The live demo uses mock data for portability).
+1.  **Database:** Run `Ticket Sales System/Database/schema_and_data.sql` in any Oracle SQL environment (SQL Developer, SQLPlus) to build the schema and populate data.
+2.  **Dashboard:** Open `Ticket Sales System/Web/index.html` in any web browser. (Note: The live demo uses mock data for portability).
