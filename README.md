@@ -10,6 +10,10 @@ This project simulates a backend database and a frontend dashboard for an NBA ti
 **Role:** Programmer Analyst Intern Project
 **Tech Stack:** Oracle SQL, HTML5, JavaScript (jQuery, DataTables)
 
+## Preview
+
+![Dashboard Preview](assets/preview.png)
+_(Live demo uses mock data)_
 ## Features
 1.  **Relational Database Design:** 3NF normalized schema managing Fans, Games, Seat Tiers, and Transactions.
 2.  **Data Integrity:** Implemented Primary Keys, Foreign Keys, and Constraints.
@@ -27,4 +31,8 @@ The project includes analytical queries to solve business problems, such as:
 
 ## How to Run
 1.  **Database:** Run `Ticket Sales System/Database/schema_and_data.sql` in any Oracle SQL environment (SQL Developer, SQLPlus) to build the schema and populate data.
-2.  **Dashboard:** Open `Ticket Sales System/Web/index.html` in any web browser. (Note: The live demo uses mock data for portability).
+2.  **Dashboard:** Open `Ticket Sales System/Web/index_demo.html` in any web browser. (Note: The live demo uses mock data for portability).
+
+## Live Demo
+
+👉 [Live Demo](https://iancai119.github.io/nba-ticket-sales-system/Ticket%20Sales%20System/Web/index_demo.html)
