@@ -1,1 +1,39 @@
-LS0gMS4gUmV2ZW51ZSBieSBHYW1lOiBXaGljaCBnYW1lIGdlbmVyYXRlZCB0aGUgbW9zdCBtb25leT8KClNFTEVDVAogICAgZy5ob21lX3RlYW0gfHwgJyB2cyAnIHx8IGcuYXdheV90ZWFtIEFTIG1hdGNodXAsCiAgICBUT19DSEFSKGcudGlwb2ZmX3RpbWUsICdZWVlZLU1NLUREJykgQVMgZ2FtZV9kYXRlLAogICAgQ09VTlQodHMudGlja2V0X2lkKSBBUyB0aWNrZXRzX3NvbGQsCiAgICBUT19DSEFSKFNVTSh0cy5wdXJjaGFzZV9wcmljZSksICckOTksOTk5LjAwJykgQVMgdG90YWxfcmV2ZW51ZQpGUk9NIFRpY2tldF9TYWxlcyB0cwpKT0lOIE5CQV9nYW1lIGcgT04gdHMuZ2FtZV9pZCA9IGcuZ2FtZV9pZApHUk9VUCBCWSBnLmhvbWVfdGVhbSwgZy5hd2F5X3RlYW0sIGcudGlwb2ZmX3RpbWUKLS0gTk9URTogb3JkZXIgYnkgdGhlIHJhdyBTVU0sIG5vdCB0aGUgZm9ybWF0dGVkIHN0cmluZy4KLS0gVGhlICckJy1mb3JtYXR0ZWQgdG90YWxfcmV2ZW51ZSBpcyB0ZXh0LCBzbyBvcmRlcmluZyBieSBpdCB3b3VsZCBzb3J0Ci0tIGFscGhhYmV0aWNhbGx5ICgnJDksMDAwLjAwJyB3b3VsZCBjb21lIGJlZm9yZSAnJDEwLDgwMC41MCcpLgpPUkRFUiBCWSBTVU0odHMucHVyY2hhc2VfcHJpY2UpIERFU0M7CgotLSAyLiBWSVAgQ3VzdG9tZXIgSWRlbnRpZmljYXRpb246IGZhbnMgd2hvIGNvbnRyaWJ1dGUgdGhlIG1vc3QgcmV2ZW51ZQoKU0VMRUNUCiAgICBmLnVzZXJuYW1lLAogICAgZi5lbWFpbF9hZGRyZXNzLAogICAgQ09VTlQodHMudGlja2V0X2lkKSBBUyB0aWNrZXRzX3B1cmNoYXNlZCwKICAgIFRPX0NIQVIoU1VNKHRzLnB1cmNoYXNlX3ByaWNlKSwgJyQ5OSw5OTkuMDAnKSBBUyB0b3RhbF9zcGVudApGUk9NIEZhbiBmCkpPSU4gVGlja2V0X1NhbGVzIHRzIE9OIGYuZmFuX2lkID0gdHMuZmFuX2lkCkdST1VQIEJZIGYudXNlcm5hbWUsIGYuZW1haWxfYWRkcmVzcwpIQVZJTkcgU1VNKHRzLnB1cmNoYXNlX3ByaWNlKSA+IDIwMDAKT1JERVIgQlkgU1VNKHRzLnB1cmNoYXNlX3ByaWNlKSBERVNDOwoKLS0gMy4gUmV2ZW51ZSBieSBTZWF0IFRpZXI6IHdoaWNoIHNlYXRpbmcgY2F0ZWdvcnkgZWFybnMgdGhlIG1vc3Q/CgpTRUxFQ1QKICAgIHN0LnRpZXJfbmFtZSwKICAgIENPVU5UKHRzLnRpY2tldF9pZCkgQVMgdGlja2V0c19zb2xkLAogICAgVE9fQ0hBUihTVU0odHMucHVyY2hhc2VfcHJpY2UpLCAnJDk5LDk5OS4wMCcpIEFTIHRvdGFsX3JldmVudWUsCiAgICBUT19DSEFSKEFWRyh0cy5wdXJjaGFzZV9wcmljZSksICckOTksOTk5LjAwJykgQVMgYXZnX3ByaWNlCkZST00gVGlja2V0X1NhbGVzIHRzCkpPSU4gU2VhdF9UaWVyIHN0IE9OIHRzLnRpZXJfY29kZSA9IHN0LnRpZXJfY29kZQpHUk9VUCBCWSBzdC50aWVyX25hbWUKT1JERVIgQlkgU1VNKHRzLnB1cmNoYXNlX3ByaWNlKSBERVNDOwo=
+-- 1. Revenue by Game: Which game generated the most money?
+
+SELECT
+    g.home_team || ' vs ' || g.away_team AS matchup,
+    TO_CHAR(g.tipoff_time, 'YYYY-MM-DD') AS game_date,
+    COUNT(ts.ticket_id) AS tickets_sold,
+    TO_CHAR(SUM(ts.purchase_price), '$99,999.00') AS total_revenue
+FROM Ticket_Sales ts
+JOIN NBA_game g ON ts.game_id = g.game_id
+GROUP BY g.home_team, g.away_team, g.tipoff_time
+-- NOTE: order by the raw SUM, not the formatted string.
+-- The '$'-formatted total_revenue is text, so ordering by it would sort
+-- alphabetically ('$9,000.00' would come before '$10,800.50').
+ORDER BY SUM(ts.purchase_price) DESC;
+
+-- 2. VIP Customer Identification: fans who contribute the most revenue
+
+SELECT
+    f.username,
+    f.email_address,
+    COUNT(ts.ticket_id) AS tickets_purchased,
+    TO_CHAR(SUM(ts.purchase_price), '$99,999.00') AS total_spent
+FROM Fan f
+JOIN Ticket_Sales ts ON f.fan_id = ts.fan_id
+GROUP BY f.username, f.email_address
+HAVING SUM(ts.purchase_price) > 2000
+ORDER BY SUM(ts.purchase_price) DESC;
+
+-- 3. Revenue by Seat Tier: which seating category earns the most?
+
+SELECT
+    st.tier_name,
+    COUNT(ts.ticket_id) AS tickets_sold,
+    TO_CHAR(SUM(ts.purchase_price), '$99,999.00') AS total_revenue,
+    TO_CHAR(AVG(ts.purchase_price), '$99,999.00') AS avg_price
+FROM Ticket_Sales ts
+JOIN Seat_Tier st ON ts.tier_code = st.tier_code
+GROUP BY st.tier_name
+ORDER BY SUM(ts.purchase_price) DESC;
