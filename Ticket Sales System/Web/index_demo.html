@@ -380,17 +380,30 @@
             mockData.forEach(function (item) {
                 spentByFan[item.fan_id] = (spentByFan[item.fan_id] || 0) + item.purchase_price;
             });
-            var vips = Object.keys(spentByFan)
+            var vipData = Object.keys(spentByFan)
                 .filter(function (fanId) { return spentByFan[fanId] > 2000; })
-                .sort(function (a, b) { return spentByFan[b] - spentByFan[a]; });
-            vips.forEach(function (fanId) {
-                $("#vipBody").append(
-                    "<tr><td>" + fans[fanId] + "</td><td>" + money(spentByFan[fanId]) + "</td></tr>"
-                );
+                .map(function (fanId) {
+                    return { username: fans[fanId], total_spent: spentByFan[fanId] };
+                });
+            $("#vipTable").DataTable({
+                data: vipData,
+                columns: [
+                    { data: "username" },
+                    {
+                        data: "total_spent",
+                        // sort by the raw number, display as formatted money
+                        render: function (n, type) {
+                            return type === "display" ? money(n) : n;
+                        }
+                    }
+                ],
+                order: [[1, "desc"]],
+                pageLength: 5,
+                lengthMenu: [5, 10, 25],
+                pagingType: "full_numbers",
+                columnDefs: [{ className: "dt-center", targets: "_all" }],
+                language: { emptyTable: "No VIP customers yet." }
             });
-            if (vips.length === 0) {
-                $("#vipBody").append("<tr><td colspan='2'>No VIP customers yet.</td></tr>");
-            }
 
             // ---- Main sales table with game / tier filters ----
             var table = $("#mainTable").DataTable({
@@ -451,7 +464,7 @@
         </div>
         <div class="card">
             <h3>VIP Customers <small style="color:#888">(spent &gt; $2,000)</small></h3>
-            <table class="vip">
+            <table id="vipTable" class="vip" style="width:100%">
                 <thead><tr><th>Username</th><th>Total Spent</th></tr></thead>
                 <tbody id="vipBody"></tbody>
             </table>
